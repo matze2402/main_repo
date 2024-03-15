@@ -17,6 +17,9 @@ jobs:
         run: git clone https://github.com/matze2402/main_repo.git next_repo
         # Replace 'yourusername' with your GitHub username and 'target-repo' with the name of your target repository
 
+      - name: Create target directory
+        run: mkdir -p next_repo/files_new  
+
       - name: Copy folder to target repository
         run: |
           cp -r files/* next_repo/files_new
