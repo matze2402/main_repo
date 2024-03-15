@@ -33,5 +33,7 @@ jobs:
       - name: Push folder to destination repository
         run: |
           git add .
+          git config --global user.email "you@example.com"
+          git config --global user.name "matze2402"
           git commit -m "Push specified folder from source repository"
           git push --force destination main
