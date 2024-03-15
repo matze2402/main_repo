@@ -20,7 +20,7 @@ jobs:
       - name: Copy folder to target repository
         run: |
           cp -r files/* next_repo/files_new
-          cd target-repo
+          cd next_repo
           git config --local user.email "action@github.com"
           git config --local user.name "matze2402"
           git add .
