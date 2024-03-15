@@ -3,37 +3,29 @@ name: Push Folder to Another Repository
 on:
   push:
     branches:
-      - main  # Adjust the branch name if needed
+      - main  # Adjust as needed
 
 jobs:
-  push_folder:
+  push-folder:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source repository
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Copy specified folder
-        run: |
-          mkdir -p /tmp/pushed_folder
-          cp -r files /tmp/pushed_folder
-        # Replace 'folder_to_push' with the name of the folder you want to push
+      - name: Clone target repository
+        run: git clone https://github.com/matze2402/next_repo.git next_repo
+        # Replace 'yourusername' with your GitHub username and 'target-repo' with the name of your target repository
 
-      - name: Initialize destination repository
+     
+      - name: Copy folder to target repository
         run: |
-          cd /tmp/pushed_folder
-          git init
-          git config user.email "actions@github.com"
-          git config user.name "matze2402"
-
-      - name: Add remote of destination repository
-        run: git remote add destination https://github.com/matze2402/next_repo.git
-        # Replace <destination_repository_url> with the URL of the destination repository
-
-      - name: Push folder to destination repository
-        run: |
+          cp -r files/* next_repo/files_new
+          cd next_repo
+          git config --local user.email "action@github.com"
+          git config --local user.name "matze2402"
+          git config --global url.https://${{ secrets.token}}@github.com/.insteadOf https://github.com/
           git add .
-          git config --global user.email "you@example.com"
-          git config --global user.name "matze2402"
-          git commit -m "Push specified folder from source repository"
-          git push --force destination main
+          git commit -m "Copy files from source repository"
+          git push
+
