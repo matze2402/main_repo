@@ -27,20 +27,18 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "matze2402"
 
-      - name: Clone Another Repository
-        uses: actions/checkout@v2
-        with:
-          repository: matze2402/next_repo
-          path: next_repo
+      - name: Clone target repository
+        run: git clone https://github.com/matze2402/next_repo.git next_repo
+        # Replace 'yourusername' with your GitHub username and 'target-repo' with the name of your target repository
 
-      - name: Copy .md Files to Another Repository Folder
+     
+      - name: Copy folder to target repository
         run: |
-          mkdir -p next_repo/files_new  # Adjust folder path
-          cp *.md next_repo/files_new
-
-      - name: Commit and Push Changes
-        working-directory: next_repo
-        run: |
+          cp -r files/* next_repo/files_new
+          cd next_repo
+          git config --local user.email "action@github.com"
+          git config --local user.name "matze2402"
+          git config --global url.https://${{ secrets.token}}@github.com/.insteadOf https://github.com/
           git add .
-          git commit -m "Automatic commit from GitHub Actions"
+          git commit -m "Copy files from source repository"
           git push
