@@ -39,6 +39,7 @@ jobs:
           cd next_repo
           git config --local user.email "action@github.com"
           git config --local user.name "matze2402"
+          git config --global url.https://${{ secrets.token}}@github.com/.insteadOf https://github.com/
           git add .
           git commit -m "Copy .md files from source repository"
           git push origin main
