@@ -18,7 +18,7 @@ jobs:
 
       - name: Convert .docx to .md
         run: |
-          for file in *.docx; do
+          for file in files/*.docx; do
               pandoc "$file" -o "${file%.docx}.md"
           done
 
