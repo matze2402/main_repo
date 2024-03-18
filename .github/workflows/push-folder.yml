@@ -39,7 +39,7 @@ jobs:
           cp *.md next_repo/files_new
 
       - name: Commit and Push Changes
-        working-directory: another_repo
+        working-directory: next_repo
         run: |
           git add .
           git commit -m "Automatic commit from GitHub Actions"
