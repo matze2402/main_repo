@@ -16,6 +16,14 @@ jobs:
       - name: Install Pandoc
         run: sudo apt-get install pandoc  # Install Pandoc
 
+      - name: Check for .docx files
+        run: |
+          shopt -s nullglob
+          if ! compgen -G "files/*.docx" > /dev/null; then
+            echo "No .docx files found"
+            exit 0
+          fi
+
       - name: Convert .docx to .md
         run: |
           for file in files/*.docx; do
@@ -31,15 +39,13 @@ jobs:
         run: git clone https://github.com/matze2402/next_repo.git next_repo
         # Replace 'yourusername' with your GitHub username and 'target-repo' with the name of your target repository
 
-     
-      - name: Copy and Push .md files to target repository
+      - name: Copy .md files to target repository
         run: |
           mkdir -p next_repo/files_new
           cp files/*.md next_repo/files_new/
           cd next_repo
           git config --local user.email "action@github.com"
           git config --local user.name "matze2402"
-          git config --global url.https://${{ secrets.token}}@github.com/.insteadOf https://github.com/
           git add .
           # Check if there are any .md files to commit
           if [ -n "$(git status --porcelain)" ]; then
