@@ -19,16 +19,14 @@ jobs:
       - name: Check for .docx files
         run: |
           shopt -s nullglob
-          if ! compgen -G "files/*.docx" > /dev/null; then
+          files=(files/*.docx)
+          if [ ${#files[@]} -eq 0 ]; then
             echo "No .docx files found"
-            exit 0
-          fi
-
-      - name: Convert .docx to .md
-        run: |
-          for file in files/*.docx; do
+          else
+            for file in "${files[@]}"; do
               pandoc "$file" -o "${file%.docx}.md"
-          done
+            done
+          fi
 
       - name: Configure Git
         run: |
@@ -47,10 +45,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "matze2402"
           git add .
-          # Check if there are any .md files to commit
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Copy .md files from source repository"
-            git push origin main
-          else
-            echo "No .md files to commit"
-          fi
+          git commit -m "Copy .md files from source repository"
+          git push origin main
