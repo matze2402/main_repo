@@ -3,7 +3,10 @@ name: Convert and Push to Another Repository
 on:
   push:
     branches:
-      - main  # Adjust the branch name if needed
+      - main # Adjust the branch name if needed
+
+    paths:
+      - 'files/*.md'
 
 jobs:
   convert_and_push:
